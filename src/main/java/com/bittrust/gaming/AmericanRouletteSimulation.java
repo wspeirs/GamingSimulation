@@ -12,12 +12,31 @@ import com.bittrust.gaming.roulette.American.Color;
  */
 public class AmericanRouletteSimulation {
 
+	private static final int RUN_SIZE = 30;
 	
-	private static final int RUN_SIZE = 20;
-
+	private static American roulette = new American();
+	
 	public static void main(String[] args) {
+		int win = 0;
+		int loss = 0;
+		
+		for(int i=0; i < 1000; ++i) {
+			int res = run();
+			
+			if(res == 1) {
+				++win;
+			} else {
+				++loss;
+			}
+		}
+		
+		System.out.println(" WIN: " + win);
+		System.out.println("LOSS: " + loss);
+	}
+
+	public static int run() {
 		int curBet = 5;
-		int startMoney = (int) (curBet * Math.pow(2, 6));
+		int startMoney = (int) (curBet * Math.pow(2, 7));
 		int money = startMoney;
 		int curRun = 1;
 		int counter = 0;
@@ -27,9 +46,7 @@ public class AmericanRouletteSimulation {
 		int[] blackRuns = new int[RUN_SIZE];
 		int[] greenRuns = new int[RUN_SIZE];
 		
-		American roulette = new American();
-
-		System.out.println("START MONEY: " + startMoney);
+//		System.out.println("START MONEY: " + startMoney);
 		
 		while(money > 0 && money < startMoney * 2) {
 			
@@ -66,26 +83,41 @@ public class AmericanRouletteSimulation {
 			// compute the money
 			if(curColor == Color.BLACK) {
 				money += curBet * 2;
-				System.out.println("WIN  " + curNum + " " + curColor + " " + curBet + " " + money);
+//				System.out.println("WIN  " + curNum + " " + curColor + " " + curBet + " " + money);
 				curBet = 5;
 			} else {
-				System.out.println("LOSE " + curNum + " " + curColor + " " + curBet + " " + money);
+//				System.out.println("LOSE " + curNum + " " + curColor + " " + curBet + " " + money);
 				curBet = curBet * 2;
 			}
 		}
 		
 		if(money < 0) {
-			System.out.println("*** BUSTED ***");
+//			System.out.println("*** BUSTED ***");
+			
+			return -1;
+/*
+			if(runColor == Color.RED) {
+				++redRuns[curRun];
+			} else if(runColor == Color.BLACK) {
+				++blackRuns[curRun];
+			} else {
+				++greenRuns[curRun];
+			}
+*/
 		}
 		
-		System.out.println("ROLLS: " + counter);
+//		System.out.println("ROLLS: " + counter);
+
+		return 1;
+	
+/*	
 		System.out.println();
 		
 		// print out the runs
 		for(int i=1; i < RUN_SIZE; ++i) {
 			System.out.println(i + " RED " + redRuns[i] + " BLACK " + blackRuns[i] + " GREEN " + greenRuns[i]);
 		}
-
+*/
 	}
 
 }
